@@ -1,2 +1,1 @@
-VimCrypt~01!ди4о─}c┤XТЕ╧%Cпq&yД╨8[рурMЩBoон└█>─НvК┐┘╦┬
-.чT*+┐"ТАЪ░а¤╙'
+I'LL FILL THIS IN LATER I'M AT A HACKATHON THERE'S NO TIME!!!1
