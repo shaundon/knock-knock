@@ -1,0 +1,67 @@
+<!doctype html>
+<html ng-app="lockAdmin">
+<head>
+    <title>Lock Admin</title>
+    <script src="scripts/angular/angular.min.js"></script>
+    <script src="scripts/angular-animate/angular-animate.min.js"></script>
+    <script src="scripts/angular-resource/angular-resource.min.js"></script>
+    <script src="scripts/simple-notifications/dist/simple-notifications.min.js"></script>
+    <script src="main.js"></script>
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <link href="scripts/simple-notifications/dist/simple-notifications.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+</head>
+<body ng-controller="MainController">
+<h1>Lock Admin</h1>
+
+<div ng-hide="loaded">
+    Loading..
+</div>
+
+<div ng-show="loaded">
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 25%;">ID</th>
+            <th style="width: 25%;">Name</th>
+            <th style="width: 20%;">Access Code</th>
+            <th style="width: 25%;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="residence in residences">
+            <td>
+                {{residence.id}}
+            </td>
+            <td>
+                <span ng-hide="residence.editing">{{residence.name}}</span>
+                <input ng-show="residence.editing" type="text" placeholder="Name" ng-model="residence.name">
+            </td>
+            <td>
+                <span ng-hide="residence.editing">{{residence.code}}</span>
+                <input ng-show="residence.editing" type="text" placeholder="Code" ng-model="residence.code">
+            </td>
+            <td class="centered">
+                <button ng-click="toggleEditingMode(residence)" ng-hide="residence.editing">Edit</button>
+                <button ng-click="delete($index, residence)" ng-hide="residence.editing">Delete</button>
+                <button ng-click="edit($index, residence)" ng-show="residence.editing">Save</button>
+                <button ng-click="toggleEditingMode(residence)" ng-show="residence.editing">Cancel</button>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td></td>
+            <td>
+                <input type="text" ng-model="newResidenceName" placeholder="Name">
+            </td>
+            <td></td>
+            <td class="centered">
+                <button ng-show="newResidenceName.length > 0" ng-click="new(newResidenceName)">Create</button>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+</body>
+</html>

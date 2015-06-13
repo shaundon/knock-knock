@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+    <head>
+      <title>Test the door lock</title>
+      <script src="scripts/jquery/dist/jquery.min.js"></script>
+      <script src="scripts/simple-notifications/dist/simple-notifications.min.js"></script>
+      <link href="scripts/simple-notifications/dist/simple-notifications.min.css" rel="stylesheet">    
+      <script src="main.js"></script>
+      <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+      <link rel="stylesheet" type="text/css" href="main.css"/>
+      <script>
+      function knock() {
+        var residenceId = $('#residence-id').val();
+
+        if (!residenceId) {
+          SimpleNotifications.create("Enter a residence ID.", "bad");
+          return;
+        }
+
+        var code = $('#residence-code').val();
+        $.ajax({
+          url: '/authenticate/' + residenceId,
+          method: 'PUT',
+          data: {
+            code: code
+          }
+        })
+          .done(function(success) {
+            SimpleNotifications.create(success, "good");
+          })
+          .fail(function(error) {
+            SimpleNotifications.create(error.responseText, "bad");
+          })
+        ;
+      }
+      </script>
+    </head>
+    <body>
+      <h1>Door Lock</h1>
+
+      <section>
+      	<input id="residence-id" type="text" placeholder="Residence ID">
+      	<input id="residence-code" type="text" placeholder="Code">
+      	<button onclick="knock();">Send</button>
+      </section>
+    </body>
+</html>
