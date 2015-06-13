@@ -112,15 +112,18 @@ app.delete('/residence/:id', function(req, res) {
 /* Entry attempt endpoints. */
 
 app.put('/authenticate/:id', function(req, res) {
+	console.log("PUT request to /authenticate/:id");
 	var id = req.params.id;
 	var residence = databaseOps.getResidence(id);
 	if (!residence) {
+		console.log("No residence found with ID " + id);
 		res.status(404).send('No residence found with ID "' + id + '"');
 		return;
 	}
 
 	var attemptedCode = req.body.code || '';
 	if (!attemptedCode) {
+		console.log("No code supplied");
 		res.status(400).send("No code supplied.");
 		return;
 	}
@@ -128,9 +131,11 @@ app.put('/authenticate/:id', function(req, res) {
 	var realCode = residence.code;
 
 	if (attemptedCode === realCode) {
+		console.log("Code was correct!");
 		res.status(200).send("Come on in!");
 	}
 	else {
+		console.log("Code incorrect. (" + attemptedCode + ")");
 		res.status(403).send("Incorrect code.");
 	}
 });
