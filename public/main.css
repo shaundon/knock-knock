@@ -3,7 +3,14 @@
 }
 
 body {
-	background: #08c;
+	background: #0088cc; /* Old browsers */
+	background: -moz-linear-gradient(-45deg,  #0088cc 0%, #05abe0 100%); /* FF3.6+ */
+	background: -webkit-linear-gradient(-45deg,  #0088cc 0%,#05abe0 100%); /* Chrome10+,Safari5.1+ */
+	background: linear-gradient(135deg,  #0088cc 0%,#05abe0 100%); /* W3C */
+   	height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 	color: #fff;
 	font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
 	margin: 50px auto;
@@ -20,6 +27,10 @@ h1 {
 
 section {
 	text-align: center;
+}
+
+a {
+	color: #fff;
 }
 
 button {
@@ -70,4 +81,11 @@ td {
 
 .centered {
 	text-align: center;
+}
+
+.whoami {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	text-align: right;
 }

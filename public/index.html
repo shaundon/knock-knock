@@ -9,10 +9,18 @@
     <script src="main.js"></script>
     <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
     <link href="scripts/simple-notifications/dist/simple-notifications.min.css" rel="stylesheet">
+    <link href="scripts/components-font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="main.css"/>
 </head>
 <body ng-controller="MainController">
-<h1>Lock Admin</h1>
+<h1>Residence Admin</h1>
+<p class="centered">
+    Hey. Here's all the residences you manage.
+</p>
+
+<div class="whoami">
+    You are signed in as <strong>Mr A Manager</strong> <a href="#">Sign Out</a>.
+</div>
 
 <div ng-hide="loaded">
     Loading..
@@ -42,10 +50,10 @@
                 <input ng-show="residence.editing" type="text" placeholder="Code" ng-model="residence.code">
             </td>
             <td class="centered">
-                <button ng-click="toggleEditingMode(residence)" ng-hide="residence.editing">Edit</button>
-                <button ng-click="delete($index, residence)" ng-hide="residence.editing">Delete</button>
-                <button ng-click="edit($index, residence)" ng-show="residence.editing">Save</button>
-                <button ng-click="toggleEditingMode(residence)" ng-show="residence.editing">Cancel</button>
+                <button ng-click="toggleEditingMode(residence)" ng-hide="residence.editing"><span class="fa fa-pencil"></span> Edit</button>
+                <button ng-click="delete($index, residence)" ng-hide="residence.editing"><span class="fa fa-trash-o"></span> Delete</button>
+                <button ng-click="edit($index, residence)" ng-show="residence.editing"><span class="fa fa-check"></span> Save</button>
+                <button ng-click="toggleEditingMode(residence)" ng-show="residence.editing"><span class="fa fa-close"></span> Cancel</button>
             </td>
         </tr>
         </tbody>
@@ -57,7 +65,7 @@
             </td>
             <td></td>
             <td class="centered">
-                <button ng-show="newResidenceName.length > 0" ng-click="new(newResidenceName)">Create</button>
+                <button ng-show="newResidenceName.length > 0" ng-click="new(newResidenceName)"><span class="fa fa-check"></span> Create</button>
             </td>
         </tr>
         </tfoot>
