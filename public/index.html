@@ -21,7 +21,7 @@
 </p>
 
 <div class="whoami">
-    Signed in as <strong>Mr A Manager</strong> <a href="#">Sign Out</a>.
+    Signed in as <strong>Mr A Manager</strong>. <a href="#">Sign Out</a>
 </div>
 
 <div ng-hide="loaded">
@@ -29,58 +29,52 @@
 </div>
 
 <div ng-show="loaded">
-    <table>
-        <thead>
-        <tr>
-            <th style="width: 20%;">ID</th>
-            <th style="width: 20%;">Name</th>
-            <th style="width: 10%;">Access Code</th>
-            <th>Last Event</th>
-            <th style="width: 25%;"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="residence in residences">
-            <td>
-                {{residence.id}}
-            </td>
-            <td>
-                <span ng-hide="residence.editing">{{residence.name}}</span>
-                <input ng-show="residence.editing" type="text" placeholder="Name" ng-model="residence.name">
-            </td>
-            <td>
-                <span ng-hide="residence.editing">{{residence.code}}</span>
-                <input ng-show="residence.editing" type="text" placeholder="Code" ng-model="residence.code">
-            </td>
-            <td>
-                <span ng-if="getLatestEvent(residence)">
-                    {{getLatestEvent(residence).text}}
-                    (<span am-time-ago="getLatestEvent(residence).date"></span>)
-                </span>
-                <span ng-hide="getLatestEvent(residence)">None yet!</span>
-            </td>
-            <td class="centered">
+
+    <div class="search-container">
+        <input type="search" ng-model="searchTerms" placeholder="Search">
+    </div>
+
+    <div ng-repeat="residence in residences | filter:searchTerms" class="residence-container">
+        <p class="name bigger">
+            <span class="buttons-container">
                 <button ng-click="toggleEditingMode(residence)" ng-hide="residence.editing"><span class="fa fa-pencil"></span> Edit</button>
                 <button ng-click="delete($index, residence)" ng-hide="residence.editing"><span class="fa fa-trash-o"></span> Delete</button>
                 <button ng-click="edit($index, residence)" ng-show="residence.editing"><span class="fa fa-check"></span> Save</button>
                 <button ng-click="toggleEditingMode(residence)" ng-show="residence.editing"><span class="fa fa-close"></span> Cancel</button>
-            </td>
-        </tr>
-        </tbody>
-        <tfoot>
-        <tr>
-            <td></td>
-            <td>
-                <input type="text" ng-model="newResidenceName" placeholder="Name">
-            </td>
-            <td></td>
-            <td></td>
-            <td class="centered">
-                <button ng-show="newResidenceName.length > 0" ng-click="new(newResidenceName)"><span class="fa fa-check"></span> Create</button>
-            </td>
-        </tr>
-        </tfoot>
-    </table>
+            </span>
+            <span class="fa fa-home"></span> 
+            <span ng-hide="residence.editing">{{residence.name}} (#{{residence.id}})</span>
+            <input ng-show="residence.editing" type="text" placeholder="Name" ng-model="residence.name">
+        </p>
+
+        <p>
+            <span class="fa fa-key"></span> 
+            <code ng-hide="residence.editing">{{residence.code}}</code>
+            <input ng-show="residence.editing" type="text" placeholder="Code" ng-model="residence.code">
+        </p>
+
+        <p>
+            <span ng-if="getLatestEvent(residence)">
+                <span class="fa fa-clock-o"></span>
+                {{getLatestEvent(residence).text}}
+                (<span am-time-ago="getLatestEvent(residence).date"></span>)
+                <button class="show-all" ng-click="residence.logsShowing = !residence.logsShowing">{{residence.logsShowing ? 'Hide All' : 'Show All'}}</button>
+            </span>
+        </p>
+
+        <p ng-show="residence.logsShowing" ng-repeat="log in residence.auditLog">
+            {{log.text}} (<span am-time-ago="log.date"></span>)
+        </p>
+    </div>
+
+    <div>
+        <p class="bigger">Create a residence</p>
+        <p>
+            <input type="text" ng-model="newResidenceName" placeholder="Name">
+            <button ng-show="newResidenceName.length > 0" ng-click="new(newResidenceName)"><span class="fa fa-check"></span> Create</button>
+        </p>
+        <p>ID and code will be automatically generated.</p>
+    </div>
 </div>
 </body>
 </html>
