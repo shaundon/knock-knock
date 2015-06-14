@@ -2,7 +2,8 @@
 
 angular.module('lockAdmin', [
     'ngResource',
-    'ngAnimate'
+    'ngAnimate',
+    'angularMoment'
 ])
 
     // This limits Angular animations to elements that begin
@@ -35,6 +36,14 @@ angular.module('lockAdmin', [
         	$scope.residences = success;
         	$scope.loaded = true;
         });
+
+        $scope.getLatestEvent = function(residence) {
+            if (residence.auditLog && residence.auditLog.length > 0) {
+                var event = residence.auditLog[residence.auditLog.length-1];
+                return event;
+            }
+            return null;
+        };
 
         $scope.edit = function(index, residence) {
             residence.$update();
