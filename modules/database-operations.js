@@ -64,5 +64,20 @@ module.exports = {
 			}
 		}
 		return false;
-	}
+	},
+	addToAuditLog: function(event) {
+		var that = this;
+		for (var i in that.database.residences) {
+			if (that.database.residences[i].id == event.id) {
+				var auditLog = that.database.residences[i].auditLog || [];
+				auditLog.push({
+					text: event.text,
+					date: new Date()
+				});
+				that.database.residences[i].auditLog = auditLog;
+				return that.database.residences[i];
+			}
+		}
+		return null;
+	} 
 };

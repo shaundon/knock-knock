@@ -20,6 +20,13 @@ app.use('/', express.static('public'));
 
 app.set('port', (process.env.PORT || 5000));
 
+var AUDIT_TYPES = {
+	success: 'Successful login.',
+	fail: 'Failed login.',
+	created: 'Residence created.',
+	changed: 'Residence updated.'
+};
+
 app.listen(app.get('port'), function() {
 	console.log('Server running on port ' + app.get('port'));
 });
@@ -63,6 +70,11 @@ app.post('/residence', function(req, res) {
 
 	var residence = databaseOps.createResidence(id, name, code);
 
+	databaseOps.addToAuditLog({
+		id: id,
+		text: AUDIT_TYPES.created
+	});
+
 	res.status(201).send(residence);
 });
 
@@ -88,6 +100,10 @@ app.put('/residence/:id', function(req, res) {
 	var residence = databaseOps.updateResidence(id, name, code);
 
 	if (residence) {
+		databaseOps.addToAuditLog({
+			id: id,
+			text: AUDIT_TYPES.changed
+		});
 		res.status(200).send(residence);
 	}
 	else {
@@ -124,6 +140,10 @@ app.put('/authenticate/:id', function(req, res) {
 	var attemptedCode = req.body.code || '';
 	if (!attemptedCode) {
 		console.log("No code supplied");
+		databaseOps.addToAuditLog({
+			id: id,
+			text: AUDIT_TYPES.fail
+		});
 		res.status(400).send("No code supplied.");
 		return;
 	}
@@ -132,10 +152,18 @@ app.put('/authenticate/:id', function(req, res) {
 
 	if (attemptedCode === realCode) {
 		console.log("Code was correct!");
+		databaseOps.addToAuditLog({
+			id: id,
+			text: AUDIT_TYPES.success
+		});
 		res.status(200).send("Come on in!");
 	}
 	else {
 		console.log("Code incorrect. (" + attemptedCode + ")");
+		databaseOps.addToAuditLog({
+			id: id,
+			text: AUDIT_TYPES.fail
+		});
 		res.status(403).send("Incorrect code.");
 	}
 });
